@@ -41,9 +41,17 @@ public class BelanjaBuahMaven {
             }
             System.out.println("Masukkan harga "+nama+":");
             harga = input.nextDouble();
+            if (harga<=0) {
+                System.out.println("Harga tidak boleh kurang dari atau sama dengan 0");
+                continue;
+            }
             hargas.add(harga);
             System.out.println("Masukkan jumlah stok "+nama+":");
             stok = input.nextInt();
+            if (harga<=0) {
+                System.out.println("Stok tidak boleh kurang dari atau sama dengan 0");
+                continue;
+            }
             stoks.add(stok);
             System.out.println("\n========================");
             for (String i:buahs) {
