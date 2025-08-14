@@ -6,6 +6,7 @@ public class BelanjaBuahMaven {
         Scanner input = new Scanner(System.in);
         System.out.println("""
             !JUAL BELI BUAH DI SINI HANYA SEBATAS SIMULASI, JADI UANGNYA TIDAK TERBATAS!
+            Tempat: Pasar/toko buah
 
             Modifikasi Toko Buah (Penjual) 
             Ketik 'selesai' dan enter di bagian masukkan nama buah, jika modifikasi sudah cukup
@@ -66,19 +67,30 @@ public class BelanjaBuahMaven {
         System.out.println("""
             Beli buah yang diperlukan minimal 1 buah (Pembeli) 
             Ketik 'selesai' dan enter di bagian masukkan nama buah, jika merasa buah yang dibeli sudah cukup""");
-
+        x=0;
         while (!nama.equals("selesai")) {
             System.out.println("\n========================");
-            System.out.println("Buah yang tersedia:");
+            System.out.println("Buah yang tersedia di toko:");
             for (String i:buahs) {
                 System.out.println((buahs.indexOf(i)+1)+". "+i.substring(0,1).toUpperCase()+i.substring(1) +", harga = Rp"+hargas.get(buahs.indexOf(i))+", stok = "+stoks.get(buahs.indexOf(i)));
             }
+            if (buahb.size()!=0) {
+                System.out.println("\nBuah yang ada di keranjang:");
+                for (String i:buahb) {
+                    System.out.println((buahb.indexOf(i)+1)+". "+i.substring(0,1).toUpperCase()+i.substring(1) +", jumlah = "+jumlahs.get(buahb.indexOf(i)));
+                }
+            }
             System.out.println("========================\n");
             System.out.println("Masukkan nama buah yang ingin dibeli");
-            nama = input.next();
+            if (x>0) {
+                pp = input.nextLine();
+            }
+            nama = input.nextLine();
             nama = nama.toLowerCase();
             if (nama.equals("")) {
                 System.out.println("Tulisan kosong");
+                continue;
+            } else if (nama.equals("selesai")){
                 continue;
             } else if (!buahs.contains(nama)){
                 System.out.println("Buah tidak tersedia");
@@ -94,30 +106,36 @@ public class BelanjaBuahMaven {
                     jumlahs.set(buahb.indexOf(nama), jumlahs.get(buahb.indexOf(nama))+jumlah);
                 } else {
                     jumlahs.add(jumlah);
+                    buahb.add(nama);
+                    hargab.add(hargas.get(buahs.indexOf(nama)));
                 }
-                
-                buahb.add(nama);
-                
                 stoks.set(buahs.indexOf(nama), stoks.get(buahs.indexOf(nama))-jumlah);
             }
-            
+            x++;
         }
         for (int i=0; i<buahb.size();i++) {
             System.out.println((i+1)+". "+buahb.get(i).substring(0,1).toUpperCase()+buahb.get(i).substring(1)+", "+jumlahs.get(i)+" X "+hargab.get(i)+" = "+(jumlahs.get(i)*hargab.get(i)));
             total+= hargab.get(i)*jumlahs.get(i);
             
         }
+        if (buahb.size()==0){
+            System.out.println("(Belanja dibatalkan karena tidak membeli apa-apa)\nTerima kasih telah berkunjung ke toko buah kami!");
+            System.exit(0);;
+        }
         System.out.println("Total: Rp"+total+"\n");
         while(true){
             System.out.println("Masukkan pembayaran:");
             bayar = input.nextDouble();
-            if (bayar < total) {
-                System.out.println("Maaf pembayaran tidak cukup");
-                System.out.println("(Masukkan nominal yang sesuai atau lebih dari total harga yang ditentukan)");
+            if (bayar==0){
+                System.out.println("(Belanja dibatalkan)\nTerima kasih telah berkunjung ke toko buah kami!");
+                break;
+            }else if (bayar < total) {
+                System.out.println("Maaf, pembayaran tidak cukup");
+                System.out.println("(Masukkan nominal yang sesuai atau lebih dari total harga yang ditentukan, masukkan 0 untuk batal belanja)");
             } else {
                 kembalian= bayar-total;
                 System.out.println("Kembalian: "+kembalian);
-                System.out.println("Terima kasih telah berbelanja di toko kami!");
+                System.out.println("Terima kasih telah berbelanja di toko buah kami!");
                 break;
             }
         }
